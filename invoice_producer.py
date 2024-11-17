@@ -1,15 +1,21 @@
 from confluent_kafka import Producer
 import json
 import time
+# importing os module for environment variables
+import os
+# importing necessary functions from dotenv library
+from dotenv import load_dotenv, dotenv_values
+# loading variables from .env file
+load_dotenv()
 
 class InvoiceProducer():
     def __init__(self):
         self.topic = "invoices"
-        self.conf = {'bootstrap.servers': '',
+        self.conf = {'bootstrap.servers': os.getenv('MY_SERVER'),
                      'security.protocol': 'SASL_SSL',
                      'sasl.mechanism': 'PLAIN',
-                     'sasl.username': '',
-                     'sasl.password': '',
+                     'sasl.username': os.getenv('MY_USERNAME'),
+                     'sasl.password': os.getenv('MY_PASSWORD'),
                      'client.id': "julian-laptop"}
     def delivery_callback(self, err, msg):
         if err:
